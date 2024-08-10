@@ -1,0 +1,10 @@
+.FieldLayout {
+	display: grid;
+	grid-template-columns: repeat(3, 60px);
+	grid-template-rows: repeat(3, 60px);
+	height: 19rem;
+	width: 19rem;
+	gap: 42px;
+	box-shadow: 0 0 120px 10px #3db1ff;
+	background: linear-gradient(0.39turn, #067496, #d63909, #067a7e);
+}

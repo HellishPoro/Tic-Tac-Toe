@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Grenze+Gotisch:wght@100..900&display=swap');
+
+.Field {
+	border: 3px solid #3db1ff;
+	width: 100px;
+	height: 100px;
+	text-align: center;
+	box-sizing: border-box;
+	background: transparent;
+	background: linear-gradient(0.39turn, #963FD5, #FFDF73, #64A8D1);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-size: 55px;
+	font-family: Caveat;
+}

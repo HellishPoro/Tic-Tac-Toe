@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Grenze+Gotisch:wght@100..900&display=swap');
+
+.InformationLayout {
+	padding: 20px;
+	position: absolute;
+	top: 130px;
+	background: linear-gradient(0.39turn, #963FD5, #FFDF73, #64A8D1);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-size: 50px;
+	line-height: 40px;
+	font-family: Caveat;
+}
