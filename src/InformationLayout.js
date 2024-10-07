@@ -6,8 +6,8 @@ const InformationLayout = () => {
 
 	return (
 		<>
-			<h1 className={styles.InformationLayout} hidden={isGameEnded ? isDraw : isGameEnded}>
-				{isGameEnded ? 'Победил: ' : 'Ходит: '}{currentPlayer}
+			<h1 className={styles.InformationLayout} hidden={isGameEnded ? isDraw : isGameEnded} >
+				{isGameEnded ? `Победил: ${currentPlayer}` : `Ходит: ${currentPlayer}`}
 			</h1>
 			<h1 className={styles.InformationLayout}>
 				{isDraw ? 'Ничья' : ''}

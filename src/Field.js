@@ -38,6 +38,7 @@ const Field = ({ index, field }) => {
 			return
 		}
 		store.dispatch({ type: 'SET_CURRENT_PLAYER', payload: currentPlayer === 'X' ? 'O' : 'X' })
+
 	};
 	return <button className={styles.Field} onClick={() => handleClick(index)} disabled={field}>{field}</button>
 }
