@@ -1,11 +1,26 @@
+import { useEffect, useState } from 'react';
 import styles from './InformationLayout.module.css'
+import { store } from './store'
 
 
-const Information = ({ currentPlayer, isGameEnded, isDraw }) => {
-	return <InformationLayout currentPlayer={currentPlayer} isGameEnded={isGameEnded} isDraw={isDraw} />
-}
+const InformationLayout = () => {
+	// const { isGameEnded, isDraw, currentPlayer } = store.getState();
 
-const InformationLayout = ({ currentPlayer, isGameEnded, isDraw }) => {
+	const [state, setState] = useState(store.getState());
+	const { isGameEnded, isDraw, currentPlayer } = state
+
+	useEffect(() => {
+		const unsubscribe = store.subscribe(() => {
+			setState(store.getState());
+		});
+		return () => {
+			unsubscribe();
+		};
+	}, []);
+	// store.dispatch({ type: 'SET_CURRENT_PLAYER', payload: currentPlayer === 'X' ? 'O' : 'X' })
+	// store.dispatch({ type: 'SET_WINNER', payload: isGameEnded === 'X' ? 'O' : 'X' })
+
+
 	return (
 		<>
 			<h1 className={styles.InformationLayout} hidden={isGameEnded ? isDraw : isGameEnded}>
@@ -18,4 +33,4 @@ const InformationLayout = ({ currentPlayer, isGameEnded, isDraw }) => {
 	)
 }
 
-export default Information
+export default InformationLayout
