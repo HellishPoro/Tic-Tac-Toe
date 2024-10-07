@@ -16,7 +16,6 @@ const App = () => {
 		});
 	}, []);
 
-
 	const beginClick = () => {
 		store.dispatch({ type: 'RESTART_GAME', initialState })
 	};

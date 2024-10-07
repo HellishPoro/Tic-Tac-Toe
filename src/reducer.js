@@ -3,7 +3,6 @@ export const initialState = {
 	fields: Array(9).fill(''),
 	isDraw: false,
 	isGameEnded: false,
-	winner: '',
 }
 
 export const appReduser = (state = initialState, actiion) => {
@@ -32,12 +31,6 @@ export const appReduser = (state = initialState, actiion) => {
 			return {
 				...state,
 				isDraw: payload
-			}
-
-		case 'SET_WINNER':
-			return {
-				...state,
-				winner: payload
 			}
 
 		case 'RESTART_GAME':

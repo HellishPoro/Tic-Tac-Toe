@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import styles from './Field.module.css'
 import { store } from './store';
 
@@ -14,35 +13,20 @@ const WIN_PATTERNS = [
 ];
 
 const checkWinner = (fields, currentPlayer) => {
-
-	// store.dispatch({ type: 'SET_WINNER', payload: WIN_PATTERNS.some((pattern) => pattern.every((index) => fields[index] === currentPlayer)) })
 	return WIN_PATTERNS.some((pattern) => pattern.every((index) => fields[index] === currentPlayer))
 };
 
 const Field = ({ index, field }) => {
-	// const { isGameEnded, fields, currentPlayer } = store.getState()
-	const [state, setState] = useState(store.getState());
-	const { isGameEnded, fields, currentPlayer } = state
-
-	useEffect(() => {
-		const unsubscribe = store.subscribe(() => {
-			setState(store.getState());
-			return () => {
-				unsubscribe();
-			};
-		});
-	}, []);
-
-
+	const { isGameEnded, fields, currentPlayer } = store.getState()
 
 	const handleClick = (index) => {
-		const newFields = fields.slice()
-		newFields[index] = currentPlayer;
-		store.dispatch({ type: 'SET_CURRENT_PLAYER', payload: currentPlayer === 'X' ? 'O' : 'X' })
-		store.dispatch({ type: 'SET_FIELD', payload: newFields })
 		if (isGameEnded) {
 			return;
 		}
+		const newFields = fields.slice()
+		newFields[index] = currentPlayer;
+		store.dispatch({ type: 'SET_FIELD', payload: newFields })
+
 
 		if (checkWinner(newFields, currentPlayer)) {
 			store.dispatch({ type: 'SET_GAME_ENDED', payload: true })
@@ -53,8 +37,9 @@ const Field = ({ index, field }) => {
 			store.dispatch({ type: 'SET_GAME_ENDED', payload: true })
 			return
 		}
+		store.dispatch({ type: 'SET_CURRENT_PLAYER', payload: currentPlayer === 'X' ? 'O' : 'X' })
 	};
-	return (<div className={styles.Field} onClick={() => handleClick(index)}>{field}</div>)
+	return <button className={styles.Field} onClick={() => handleClick(index)} disabled={field}>{field}</button>
 }
 
 export default Field
