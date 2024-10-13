@@ -1,5 +1,9 @@
 import styles from './Field.module.css'
-import { store } from './store';
+// import { store } from './store';
+import { useDispatch } from 'react-redux'
+import { SET_CURRENT_PLAYER, SET_DRAW, SET_FIELD, SET_GAME_ENDED } from './action/'
+import { useSelector } from 'react-redux';
+import { selectCurrentPlayer, selectGameEnded, selectFields } from './selectors'
 
 const WIN_PATTERNS = [
 	[0, 1, 2],
@@ -17,7 +21,13 @@ const checkWinner = (fields, currentPlayer) => {
 };
 
 const Field = ({ index, field }) => {
-	const { isGameEnded, fields, currentPlayer } = store.getState()
+
+	// const { isGameEnded, fields, currentPlayer } = store.getState()
+	const isGameEnded = useSelector(selectGameEnded)
+	const currentPlayer = useSelector(selectCurrentPlayer)
+	const fields = useSelector(selectFields)
+
+	const dispatch = useDispatch()
 
 	const handleClick = (index) => {
 		if (isGameEnded) {
@@ -25,19 +35,23 @@ const Field = ({ index, field }) => {
 		}
 		const newFields = fields.slice()
 		newFields[index] = currentPlayer;
-		store.dispatch({ type: 'SET_FIELD', payload: newFields })
+		dispatch(SET_FIELD(newFields))
 
 
 		if (checkWinner(newFields, currentPlayer)) {
-			store.dispatch({ type: 'SET_GAME_ENDED', payload: true })
+			dispatch(SET_GAME_ENDED(true))
 			return;
 		}
 		if (!newFields.some((item) => item === '')) {
-			store.dispatch({ type: 'SET_DRAW', payload: true })
-			store.dispatch({ type: 'SET_GAME_ENDED', payload: true })
+			dispatch(SET_DRAW(true))
+			dispatch(SET_GAME_ENDED(true))
 			return
 		}
-		store.dispatch({ type: 'SET_CURRENT_PLAYER', payload: currentPlayer === 'X' ? 'O' : 'X' })
+		if (currentPlayer === 'X') {
+			dispatch(SET_CURRENT_PLAYER('O'))
+		} else if (currentPlayer === 'O') {
+			dispatch(SET_CURRENT_PLAYER('X'))
+		}
 
 	};
 	return <button className={styles.Field} onClick={() => handleClick(index)} disabled={field}>{field}</button>

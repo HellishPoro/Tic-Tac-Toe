@@ -3,10 +3,11 @@ import './App.css';
 import FieldLayout from './FieldLayout';
 import InformationLayout from './InformationLayout';
 import { store } from './store';
+import { useDispatch } from 'react-redux';
+import { RESTART_GAME } from './action'
 
 const App = () => {
 	const [state, setState] = useState(store.getState());
-	const { initialState } = state
 	useEffect(() => {
 		const unsubscribe = store.subscribe(() => {
 			setState(store.getState());
@@ -16,8 +17,10 @@ const App = () => {
 		});
 	}, []);
 
+	const dispatch = useDispatch()
+
 	const beginClick = () => {
-		store.dispatch({ type: 'RESTART_GAME', initialState })
+		dispatch(RESTART_GAME)
 	};
 	return (
 		<div className='App'>

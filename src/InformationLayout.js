@@ -1,8 +1,13 @@
 import styles from './InformationLayout.module.css'
-import { store } from './store'
+// import { store } from './store'
+import { useSelector } from 'react-redux';
+import { selectCurrentPlayer, selectGameEnded, selectIsDraw } from './selectors'
 
 const InformationLayout = () => {
-	const { isGameEnded, isDraw, currentPlayer } = store.getState();
+	// const { isGameEnded, isDraw, currentPlayer } = store.getState();
+	const isGameEnded = useSelector(selectGameEnded)
+	const currentPlayer = useSelector(selectCurrentPlayer)
+	const isDraw = useSelector(selectIsDraw)
 
 	return (
 		<>

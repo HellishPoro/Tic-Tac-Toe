@@ -1,0 +1,5 @@
+export { SET_CURRENT_PLAYER } from './current-player'
+export { SET_DRAW } from './draw'
+export { SET_GAME_ENDED } from './set-game'
+export { SET_FIELD } from './set-field'
+export { RESTART_GAME } from './reset-game'
