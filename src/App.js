@@ -1,36 +1,33 @@
-import { useEffect, useState } from 'react';
-import './App.css';
+import { Component } from 'react';
 import FieldLayout from './FieldLayout';
 import InformationLayout from './InformationLayout';
-import { store } from './store';
-import { useDispatch } from 'react-redux';
-import { RESTART_GAME } from './action'
+import { connect } from 'react-redux';
 
-const App = () => {
-	const [state, setState] = useState(store.getState());
-	useEffect(() => {
-		const unsubscribe = store.subscribe(() => {
-			setState(store.getState());
-			return () => {
-				unsubscribe();
-			};
-		});
-	}, []);
+class AppConteiner extends Component {
 
-	const dispatch = useDispatch()
+	constructor(props) {
+		super(props)
 
-	const beginClick = () => {
-		dispatch(RESTART_GAME)
-	};
-	return (
-		<div className='App'>
-			<InformationLayout />
-			<FieldLayout />
-			<button className='button' onClick={beginClick}>
-				Начать сначала
-			</button>
-		</div>
-	);
-};
+		this.beginClick = this.beginClick.bind(this)
+	}
+
+	beginClick() {
+		this.props.dispatch({ type: 'RESTART_GAME' })
+	}
+
+	render() {
+		return (
+			<div className="App">
+				<InformationLayout />
+				<FieldLayout />
+				<button className="button" onClick={this.beginClick}>
+					Начать сначала
+				</button>
+			</div>
+		)
+	}
+}
+
+const App = connect()(AppConteiner)
 
 export default App;

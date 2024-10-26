@@ -1,9 +1,5 @@
-import styles from './Field.module.css'
-// import { store } from './store';
-import { useDispatch } from 'react-redux'
-import { SET_CURRENT_PLAYER, SET_DRAW, SET_FIELD, SET_GAME_ENDED } from './action/'
-import { useSelector } from 'react-redux';
-import { selectCurrentPlayer, selectGameEnded, selectFields } from './selectors'
+import { connect } from 'react-redux'
+import { Component } from 'react';
 
 const WIN_PATTERNS = [
 	[0, 1, 2],
@@ -14,47 +10,61 @@ const WIN_PATTERNS = [
 	[2, 5, 8],
 	[0, 4, 8],
 	[2, 4, 6],
-];
+]
 
 const checkWinner = (fields, currentPlayer) => {
 	return WIN_PATTERNS.some((pattern) => pattern.every((index) => fields[index] === currentPlayer))
-};
+}
+class FieldConteiner extends Component {
+	constructor(props) {
+		super(props)
 
-const Field = ({ index, field }) => {
+		this.state = {
+			fields: props.fields,
+			isGameEnded: props.isGameEnded,
+			currentPlayer: props.currentPlayer,
+		}
+		this.handleClick = this.handleClick.bind(this)
+		this.index = this.props.index
+		this.field = this.props.field
+	}
 
-	// const { isGameEnded, fields, currentPlayer } = store.getState()
-	const isGameEnded = useSelector(selectGameEnded)
-	const currentPlayer = useSelector(selectCurrentPlayer)
-	const fields = useSelector(selectFields)
-
-	const dispatch = useDispatch()
-
-	const handleClick = (index) => {
-		if (isGameEnded) {
+	handleClick() {
+		if (this.props.isGameEnded) {
 			return;
 		}
-		const newFields = fields.slice()
-		newFields[index] = currentPlayer;
-		dispatch(SET_FIELD(newFields))
+		const newFields = this.props.fields.slice()
+		newFields[this.index] = this.props.currentPlayer;
+		this.props.dispatch({ type: 'SET_FIELD', payload: newFields })
 
 
-		if (checkWinner(newFields, currentPlayer)) {
-			dispatch(SET_GAME_ENDED(true))
+		if (checkWinner(newFields, this.props.currentPlayer)) {
+			this.props.dispatch({ type: 'SET_GAME_ENDED', payload: true })
 			return;
 		}
 		if (!newFields.some((item) => item === '')) {
-			dispatch(SET_DRAW(true))
-			dispatch(SET_GAME_ENDED(true))
+			this.props.dispatch({ type: 'SET_DRAW', payload: true })
+			this.props.dispatch({ type: 'SET_GAME_ENDED', payload: true })
 			return
 		}
-		if (currentPlayer === 'X') {
-			dispatch(SET_CURRENT_PLAYER('O'))
-		} else if (currentPlayer === 'O') {
-			dispatch(SET_CURRENT_PLAYER('X'))
+		if (this.props.currentPlayer === 'X') {
+			this.props.dispatch({ type: 'SET_CURRENT_PLAYER', payload: 'O' })
+		} else if (this.props.currentPlayer === 'O') {
+			this.props.dispatch({ type: 'SET_CURRENT_PLAYER', payload: 'X' })
 		}
+	}
+	render() {
+		return <button className="field text-6xl text-center " onClick={this.handleClick} disabled={this.props.field}>{this.props.field}</button>
+	}
 
-	};
-	return <button className={styles.Field} onClick={() => handleClick(index)} disabled={field}>{field}</button>
 }
+
+const mapStateToProps = (state) => ({
+	isGameEnded: state.isGameEnded,
+	currentPlayer: state.currentPlayer,
+	fields: state.fields,
+})
+
+const Field = connect(mapStateToProps)(FieldConteiner)
 
 export default Field

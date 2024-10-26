@@ -1,24 +1,36 @@
-import styles from './InformationLayout.module.css'
-// import { store } from './store'
-import { useSelector } from 'react-redux';
-import { selectCurrentPlayer, selectGameEnded, selectIsDraw } from './selectors'
+import { Component } from 'react';
+import { connect } from 'react-redux';
 
-const InformationLayout = () => {
-	// const { isGameEnded, isDraw, currentPlayer } = store.getState();
-	const isGameEnded = useSelector(selectGameEnded)
-	const currentPlayer = useSelector(selectCurrentPlayer)
-	const isDraw = useSelector(selectIsDraw)
+class InformationLayoutContainer extends Component {
+	constructor(props) {
+		super(props)
 
-	return (
-		<>
-			<h1 className={styles.InformationLayout} hidden={isGameEnded ? isDraw : isGameEnded} >
-				{isGameEnded ? `Победил: ${currentPlayer}` : `Ходит: ${currentPlayer}`}
-			</h1>
-			<h1 className={styles.InformationLayout}>
-				{isDraw ? 'Ничья' : ''}
-			</h1>
-		</>
-	)
+		this.state = {
+			isGameEnded: props.isGameEnded,
+			isDraw: props.isDraw,
+			currentPlayer: props.currentPlayer,
+		}
+	}
+	render() {
+		return (
+			<>
+				<h1 className="InformationLayout" hidden={this.props.isGameEnded ? this.props.isDraw : this.props.isGameEnded} >
+					{this.props.isGameEnded ? `Победил: ${this.props.currentPlayer}` : `Ходит: ${this.props.currentPlayer}`}
+				</h1>
+				<h1 className="InformationLayout">
+					{this.props.isDraw ? 'Ничья' : ''}
+				</h1>
+			</>
+		)
+	}
 }
+
+const mapStateToProps = (state) => ({
+	isGameEnded: state.isGameEnded,
+	currentPlayer: state.currentPlayer,
+	isDraw: state.isDraw,
+})
+
+const InformationLayout = connect(mapStateToProps)(InformationLayoutContainer)
 
 export default InformationLayout

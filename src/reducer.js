@@ -8,7 +8,6 @@ export const initialState = {
 export const appReduser = (state = initialState, actiion) => {
 	const { type, payload } = actiion
 	switch (type) {
-
 		case 'SET_CURRENT_PLAYER':
 			return {
 				...state,
